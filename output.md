@@ -24,3 +24,23 @@ Quelle activité vous aide le plus à décompresser après une journée de trava
 Quel format préférez-vous pour apprendre de nouvelles compétences ?
 >>>
 ```
+
+### Output 3ème question:
+
+```shell
+>>> choices = Choice.objects.filter(question_id=2)
+>>> for i in choices:
+...   print(i.question)
+...   print(i.choice_text)
+...   print(i.votes)
+...
+Quel outil utilisez-vous le plus pour organiser vos projets ?
+Diagrammes de Gantt
+0
+Quel outil utilisez-vous le plus pour organiser vos projets ?
+Backlog Kanban (Trello, Jira, etc.)
+0
+Quel outil utilisez-vous le plus pour organiser vos projets ?
+Un simple fichier texte ou tableau
+0
+```
