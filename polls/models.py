@@ -14,6 +14,9 @@ class Question(models.Model):
     def was_published_recently(self) -> datetime.timedelta:
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
+    def get_choices(self) -> list[str]:
+        return Choice.objects.filter(question_id=self.id)
+
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

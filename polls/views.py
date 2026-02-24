@@ -12,3 +12,11 @@ def all_polls(request: HttpRequest) -> HttpResponse:
     template = loader.get_template("polls/all.html")
     context = {"latest_question_list": latest_question_list}
     return HttpResponse(template.render(context, request))
+
+
+def detail(request: HttpRequest, question_id: int) -> HttpResponse:
+    question = Question.objects.get(id=question_id)
+    choices = question.get_choices()
+    template = loader.get_template("polls/detail.html")
+    context = {"question_id": question_id, "choices": choices}
+    return HttpResponse(template.render(context, request))
