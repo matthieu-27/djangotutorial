@@ -4,7 +4,10 @@ from django.template import loader
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    return HttpResponse("Hello, world. You're at the polls index.")
+    question_list = Question.objects.all()
+    template = loader.get_template("polls/index.html")
+    context = {"question_list": question_list}
+    return HttpResponse(template.render(context, request))
 
 
 def all_polls(request: HttpRequest) -> HttpResponse:
