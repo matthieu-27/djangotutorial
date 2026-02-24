@@ -11,11 +11,17 @@ class Question(models.Model):
     def __str__(self) -> str:
         return self.question_text
 
-    def was_published_recently(self) -> datetime.timedelta:
+    def was_published_recently(self) -> bool:
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
     def get_choices(self) -> list[str]:
         return Choice.objects.filter(question_id=self.id)
+
+    def age(self) -> timezone.timedelta:
+        return self.pub_date - timezone.now()
+
+    def get_max_choice(self) -> str:
+        return ""
 
 
 class Choice(models.Model):
