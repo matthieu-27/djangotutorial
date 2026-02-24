@@ -1,6 +1,9 @@
 {
-    "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter",
-    "editor.formatOnSave": true
-    }
+  "mypy-type-checker.args": [
+    "--ignore-missing-imports",
+    "--follow-imports=silent",
+    "--show-column-numbers",
+    "--disallow-untyped-defs",
+    "--disallow-untyped-calls"
+  ]
 }
