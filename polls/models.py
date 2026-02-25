@@ -20,8 +20,8 @@ class Question(models.Model):
     def age(self) -> timezone.timedelta:
         return self.pub_date - timezone.now()
 
-    def get_max_choice(self) -> list[float]:
-        return max(self.get_choices())
+    def get_max_choice(self) -> int:
+        return max([i.votes for i in self.get_choices()])
 
 
 class Choice(models.Model):

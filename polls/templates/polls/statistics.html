@@ -1,5 +1,8 @@
-{% if stats %}
+{% if question %}
 <h1>Statistics page</h1>
+<h2>Total number of polls: {{ total_questions }}</h2>
+<h3>Total number of possible choices: {{ total_choices }}</h3>
+<h4>Average number of votes {{ average_vote }}</h4>
 {% else %}
 <p>No stats are available.</p>
 {% endif %}

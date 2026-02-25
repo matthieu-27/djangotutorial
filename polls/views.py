@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from .models import Question, Choice
 from django.template import loader
 from django.shortcuts import get_object_or_404, render
-from django.db.models import F
+from django.db.models import F, Max, Avg
 from django.urls import reverse
 
 from .models import Choice, Question
@@ -47,8 +47,22 @@ def frequency(request: HttpRequest, question_id: int) -> HttpResponse:
 def statistics(request: HttpRequest, question_id: int) -> HttpResponse:
     question = get_object_or_404(Question, pk=question_id)
     choices = question.get_choices()
-    stats: dict = {}
-    return render(request, "polls/statistics.html", {"stats": stats})
+    total_questions = len(Question.objects.all())
+    total_votes = Choice.objects.aggregate(Max("votes", default=0))
+    total_choices = len(Choice.objects.all())
+    average_vote = Choice.objects.aggregate(Avg("votes", default=0))
+    return render(
+        request,
+        "polls/statistics.html",
+        {
+            "question": question,
+            "choices": choices,
+            "total_questions": total_questions,
+            "total_votes": total_votes,
+            "total_choices": total_choices,
+            "average_vote": average_vote
+        },
+    )
 
 
 def vote(request: HttpRequest, question_id: int) -> HttpResponse | HttpResponseRedirect:
