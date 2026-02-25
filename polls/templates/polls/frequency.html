@@ -1,0 +1,17 @@
+{% if question %}
+<h1>{{ question.question_text }}</h1>
+<table>
+  <tr>
+    {% for choice in question.choice_set.all %}
+    <td>{{ choice.choice_text }}</td>
+    {% endfor %}
+  </tr>
+  <tr>
+    {% for f in frequency %}
+    <td>{{ f }}</td>
+    {% endfor %}
+  </tr>
+</table>
+{% else %}
+<p>No question are available.</p>
+{% endif %}

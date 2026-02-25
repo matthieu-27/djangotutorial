@@ -34,6 +34,14 @@ def results(request: HttpRequest, question_id: int) -> HttpResponse:
     return render(request, "polls/results.html", {"question": question})
 
 
+def frequency(request: HttpRequest, question_id: int) -> HttpResponse:
+    question = get_object_or_404(Question, pk=question_id)
+    frequency = question.get_max_choice()
+    return render(
+        request, "polls/frequency.html", {"question": question, "frequency": frequency}
+    )
+
+
 def vote(request: HttpRequest, question_id: int) -> HttpResponse | HttpResponseRedirect:
     question = get_object_or_404(Question, pk=question_id)
     try:

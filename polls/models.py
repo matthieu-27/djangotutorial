@@ -14,14 +14,17 @@ class Question(models.Model):
     def was_published_recently(self) -> bool:
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
-    def get_choices(self) -> list[str]:
+    def get_choices(self) -> list["Choice"]:
         return Choice.objects.filter(question_id=self.id)
 
     def age(self) -> timezone.timedelta:
         return self.pub_date - timezone.now()
 
-    def get_max_choice(self) -> str:
-        return ""
+    def get_max_choice(self) -> list[float]:
+        proportion: list[float] = []
+        for c in self.get_choices():
+            proportion.append(c.votes / len(self.get_choices()))
+        return proportion
 
 
 class Choice(models.Model):
