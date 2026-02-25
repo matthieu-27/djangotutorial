@@ -117,3 +117,25 @@ Un simple fichier texte ou tableau
 >>> Question.objects.all()
 <QuerySet [<Question: Quel type de repas préférez-vous pour le dîner ?>, <Question: Quel outil utilisez-vous le plus pour organiser vos projets ?>, <Question: Comment gérez-vous vos tâches quotidiennes ?>, <Question: Quelle activité vous aide le plus à décompresser après une journée de travail ?>, <Question: Quel format préférez-vous pour apprendre de nouvelles compétences ?>, <Question: Allez vous bien ?>]>
 ```
+
+Output 10ème et 11ème question:
+
+```bash
+>>> from django.utils import timezone
+>>> create_question = Question(question_text="Allez vous bien ?", pub_date=timezone.now())
+>>> create_question.save()
+>>> Question.objects.all()
+<QuerySet [<Question: Quel type de repas préférez-vous pour le dîner ?>, <Question: Quel outil utilisez-vous le plus pour organiser vos projets ?>, <Question: Comment gérez-vous vos tâches quotidiennes ?>, <Question: Quelle activité vous aide le plus à décompresser après une journée de travail ?>, <Question: Quel format préférez-vous pour apprendre de nouvelles compétences ?>, <Question: Allez vous bien ?>]>
+>>> q = Question.objects.last()
+>>> q
+<Question: Allez vous bien ?>
+>>> choice_one = Choice(question=q, choice_text="Super !")
+>>> choice_one.save()
+>>> choice_two = Choice(question=q, choice_text="Mwé..")
+>>> choice_two.save()
+>>> choice_three = Choice(question=q, choice_text="Suisse")
+>>> choice_three.save()
+>>> q, q.choice_set.all()
+(<Question: Allez vous bien ?>, <QuerySet [<Choice: Super !>, <Choice: Mwé..>, <Choice: Suisse>]>)
+>>>
+```
