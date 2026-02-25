@@ -107,3 +107,13 @@ Un simple fichier texte ou tableau
 <QuerySet [<Question: Quel type de repas préférez-vous pour le dîner ?>, <Question: Quel outil utilisez-vous le plus pour organiser vos projets ?>, <Question: Comment gérez-vous vos tâches quotidiennes ?>, <Question: Quelle activité vous aide le plus à décompresser après une journée de travail ?>, <Question: Quel format préférez-vous pour apprendre de nouvelles compétences ?>]>
 >>>
 ```
+
+### Output 9ème question:
+
+```bash
+>>> from django.utils import timezone
+>>> create_question = Question(question_text="Allez vous bien ?", pub_date=timezone.now())
+>>> create_question.save()
+>>> Question.objects.all()
+<QuerySet [<Question: Quel type de repas préférez-vous pour le dîner ?>, <Question: Quel outil utilisez-vous le plus pour organiser vos projets ?>, <Question: Comment gérez-vous vos tâches quotidiennes ?>, <Question: Quelle activité vous aide le plus à décompresser après une journée de travail ?>, <Question: Quel format préférez-vous pour apprendre de nouvelles compétences ?>, <Question: Allez vous bien ?>]>
+```
