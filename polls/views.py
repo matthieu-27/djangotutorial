@@ -36,7 +36,9 @@ def results(request: HttpRequest, question_id: int) -> HttpResponse:
 
 def frequency(request: HttpRequest, question_id: int) -> HttpResponse:
     question = get_object_or_404(Question, pk=question_id)
-    frequency = question.get_max_choice()
+    choices = question.get_choices()
+    total = sum([x.votes for x in choices])
+    frequency = [x.votes * 100 / total for x in choices]
     return render(
         request, "polls/frequency.html", {"question": question, "frequency": frequency}
     )

@@ -7,8 +7,13 @@
     {% endfor %}
   </tr>
   <tr>
+    {% for choice in question.choice_set.all %}
+    <td>{{ choice.votes }} votes</td>
+    {% endfor %}
+  </tr>
+  <tr>
     {% for f in frequency %}
-    <td>{{ f }}</td>
+    <td>{{ f|floatformat }}%</td>
     {% endfor %}
   </tr>
 </table>

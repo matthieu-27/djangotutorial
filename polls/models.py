@@ -21,10 +21,7 @@ class Question(models.Model):
         return self.pub_date - timezone.now()
 
     def get_max_choice(self) -> list[float]:
-        proportion: list[float] = []
-        for c in self.get_choices():
-            proportion.append(c.votes / len(self.get_choices()))
-        return proportion
+        return max(self.get_choices())
 
 
 class Choice(models.Model):
