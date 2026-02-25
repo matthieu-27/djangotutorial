@@ -85,3 +85,25 @@ Un simple fichier texte ou tableau
 ('Quelle activité vous aide le plus à décompresser après une journée de travail ?', [{'id': 11, 'question_id': 4, 'choice_text': 'Un moment de détente (lecture, musique, série)', 'votes': 3}, {'id': 10, 'question_id': 4, 'choice_text': 'Une activité physique (sport, marche)', 'votes': 2}, {'id': 12, 'question_id': 4, 'choice_text': 'Un projet personnel (codage, bricolage, etc.)', 'votes': 0}])
 ('Quel format préférez-vous pour apprendre de nouvelles compétences ?', [{'id': 14, 'question_id': 5, 'choice_text': 'Des articles ou documentations écrites', 'votes': 4}, {'id': 13, 'question_id': 5, 'choice_text': 'Des tutoriels vidéo (YouTube, Udemy)', 'votes': 1}, {'id': 15, 'question_id': 5, 'choice_text': 'Des ateliers ou formations en présentiel', 'votes': 1}])
 ```
+
+### Output 7ème question:
+
+```bash
+>>> qs : Question.objects.all().order_by("id")
+>>> for q in qs:
+...   q
+...
+<Question: Quel type de repas préférez-vous pour le dîner ?>
+<Question: Quel outil utilisez-vous le plus pour organiser vos projets ?>
+<Question: Comment gérez-vous vos tâches quotidiennes ?>
+<Question: Quelle activité vous aide le plus à décompresser après une journée de travail ?>
+<Question: Quel format préférez-vous pour apprendre de nouvelles compétences ?>
+```
+
+### Output 8ème question:
+
+```bash
+>>> Question.objects.filter(question_text__contains="vous")
+<QuerySet [<Question: Quel type de repas préférez-vous pour le dîner ?>, <Question: Quel outil utilisez-vous le plus pour organiser vos projets ?>, <Question: Comment gérez-vous vos tâches quotidiennes ?>, <Question: Quelle activité vous aide le plus à décompresser après une journée de travail ?>, <Question: Quel format préférez-vous pour apprendre de nouvelles compétences ?>]>
+>>>
+```
