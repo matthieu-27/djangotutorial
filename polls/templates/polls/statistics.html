@@ -4,7 +4,8 @@
 <h3>Total number of possible choices: {{ total_choices }}</h3>
 <h3>Total number of votes: {{ total_votes }}</h3>
 <h4>Average number of votes {{ average_vote|floatformat }}</h4>
-
+<h5>Question la plus populaire à {{most_popular}} vote</h5>
+<h5>Question la moins populaire à {{least_popular}} vote</h5>
 {% else %}
 <p>No stats are available.</p>
 {% endif %}

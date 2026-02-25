@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.db.models import Max, Min
 
 
 class Question(models.Model):
@@ -22,6 +23,12 @@ class Question(models.Model):
 
     def get_max_choice(self) -> int:
         return max([i.votes for i in self.get_choices()])
+    
+    def get_most_popular(self) -> int:
+        return Choice.objects.aggregate(Max("votes", default=0))
+    
+    def get_least_popular(self) -> int:
+        return Choice.objects.aggregate(Min("votes", default=0))
 
 
 class Choice(models.Model):

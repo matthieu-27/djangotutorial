@@ -51,6 +51,8 @@ def statistics(request: HttpRequest, question_id: int) -> HttpResponse:
     total_votes = Choice.objects.aggregate(Sum("votes", default=0))
     total_choices = len(Choice.objects.all())
     average_vote = Choice.objects.aggregate(Avg("votes", default=0))
+    most_popular = question.get_most_popular()
+    least_popular = question.get_least_popular()
     return render(
         request,
         "polls/statistics.html",
@@ -60,7 +62,9 @@ def statistics(request: HttpRequest, question_id: int) -> HttpResponse:
             "total_questions": total_questions,
             "total_votes": total_votes['votes__sum'],
             "total_choices": total_choices,
-            "average_vote": average_vote['votes__avg']
+            "average_vote": average_vote['votes__avg'],
+            "most_popular": most_popular['votes__max'],
+            "least_popular": least_popular['votes__min']
         },
     )
 
