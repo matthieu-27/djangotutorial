@@ -44,6 +44,13 @@ def frequency(request: HttpRequest, question_id: int) -> HttpResponse:
     )
 
 
+def statistics(request: HttpRequest, question_id: int) -> HttpResponse:
+    question = get_object_or_404(Question, pk=question_id)
+    choices = question.get_choices()
+    stats: dict = {}
+    return render(request, "polls/statistics.html", {"stats": stats})
+
+
 def vote(request: HttpRequest, question_id: int) -> HttpResponse | HttpResponseRedirect:
     question = get_object_or_404(Question, pk=question_id)
     try:
