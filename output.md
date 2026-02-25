@@ -72,3 +72,16 @@ Un simple fichier texte ou tableau
 ('Quelle activité vous aide le plus à décompresser après une journée de travail ?', 3)
 ('Quel format préférez-vous pour apprendre de nouvelles compétences ?', 3)
 ```
+
+### Output 6ème question:
+
+```bash
+>>> for q in qs:
+...   q.question_text, [x for x in q.choice_set.all().order_by("-votes").values()]
+...
+('Quel type de repas préférez-vous pour le dîner ?', [{'id': 1, 'question_id': 1, 'choice_text': 'Un plat asiatique prêt à consommer (nouilles, ramen, etc.)', 'votes': 2}, {'id': 2, 'question_id': 1, 'choice_text': 'Un plat frais à cuisiner rapidement (viande/poisson + accompagnement simple)', 'votes': 2}, {'id': 3, 'question_id': 1, 'choice_text': 'Un plat rapide à réchauffer (surgelés, conserves)', 'votes': 2}])
+('Quel outil utilisez-vous le plus pour organiser vos projets ?', [{'id': 5, 'question_id': 2, 'choice_text': 'Backlog Kanban (Trello, Jira, etc.)', 'votes': 4}, {'id': 6, 'question_id': 2, 'choice_text': 'Un simple fichier texte ou tableau', 'votes': 3}, {'id': 4, 'question_id': 2, 'choice_text': 'Diagrammes de Gantt', 'votes': 0}])
+('Comment gérez-vous vos tâches quotidiennes ?', [{'id': 7, 'question_id': 3, 'choice_text': 'Avec une liste papier ou un carnet', 'votes': 2}, {'id': 8, 'question_id': 3, 'choice_text': 'Avec une application dédiée (Todoist, Notion, etc.)', 'votes': 2}, {'id': 9, 'question_id': 3, 'choice_text': 'Je n’ai pas de méthode fixe', 'votes': 1}])
+('Quelle activité vous aide le plus à décompresser après une journée de travail ?', [{'id': 11, 'question_id': 4, 'choice_text': 'Un moment de détente (lecture, musique, série)', 'votes': 3}, {'id': 10, 'question_id': 4, 'choice_text': 'Une activité physique (sport, marche)', 'votes': 2}, {'id': 12, 'question_id': 4, 'choice_text': 'Un projet personnel (codage, bricolage, etc.)', 'votes': 0}])
+('Quel format préférez-vous pour apprendre de nouvelles compétences ?', [{'id': 14, 'question_id': 5, 'choice_text': 'Des articles ou documentations écrites', 'votes': 4}, {'id': 13, 'question_id': 5, 'choice_text': 'Des tutoriels vidéo (YouTube, Udemy)', 'votes': 1}, {'id': 15, 'question_id': 5, 'choice_text': 'Des ateliers ou formations en présentiel', 'votes': 1}])
+```
