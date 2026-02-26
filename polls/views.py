@@ -1,18 +1,37 @@
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from .models import Question, Choice
-from django.template import loader
+from django.db.models import F
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.db.models import F, Sum, Avg
 from django.urls import reverse
-
+from django.views import generic
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.template import loader
+from django.db.models import F, Sum, Avg
 from .models import Choice, Question
+from django.utils import timezone
 
 
-def index(request: HttpRequest) -> HttpResponse:
-    question_list = Question.objects.order_by("-pub_date")[:3]
-    template = loader.get_template("polls/index.html")
-    context = {"question_list": question_list}
-    return HttpResponse(template.render(context, request))
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "question_list"
+
+    def get_queryset(self) -> list[Question]:
+        """
+        Return the last five published questions (not including those set to be
+        published in the future).
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[
+            :3
+        ]
+
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
+
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = "polls/results.html"
 
 
 def all_polls(request: HttpRequest) -> HttpResponse:
@@ -20,19 +39,6 @@ def all_polls(request: HttpRequest) -> HttpResponse:
     template = loader.get_template("polls/all.html")
     context = {"latest_question_list": latest_question_list}
     return HttpResponse(template.render(context, request))
-
-
-def detail(request: HttpRequest, question_id: int) -> HttpResponse:
-    question = get_object_or_404(Question, pk=question_id)
-    template = loader.get_template("polls/detail.html")
-    context = {"question": question}
-    return HttpResponse(template.render(context, request))
-
-
-def results(request: HttpRequest, question_id: int) -> HttpResponse:
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/results.html", {"question": question})
-
 
 def frequency(request: HttpRequest, question_id: int) -> HttpResponse:
     question = get_object_or_404(Question, pk=question_id)
@@ -52,7 +58,20 @@ def statistics(request: HttpRequest, question_id: int) -> HttpResponse:
     total_choices = len(Choice.objects.all())
     average_vote = Choice.objects.aggregate(Avg("votes", default=0))
     most_popular = question.get_most_popular()
-    least_popular = question.get_least_popular()
+    most_popular_question = Question.objects.get(pk=most_popular['question_id'])
+
+    last_total = 0
+    all_values = []
+    for i in range(1, total_questions + 1):
+        q = Question.objects.get(pk=i)
+        cs = q.get_choices()
+        total = sum([c.votes for c in cs])
+        if total > last_total:
+            last_total = total
+            most_popular['votes__max'] = total
+        all_values.append(total)
+
+    
     return render(
         request,
         "polls/statistics.html",
@@ -64,7 +83,8 @@ def statistics(request: HttpRequest, question_id: int) -> HttpResponse:
             "total_choices": total_choices,
             "average_vote": average_vote['votes__avg'],
             "most_popular": most_popular['votes__max'],
-            "least_popular": least_popular['votes__min']
+            "most_popular_question": most_popular_question,
+            "least_popular": min(all_values)
         },
     )
 
