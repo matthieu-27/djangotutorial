@@ -130,6 +130,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.vibe
 
 # Spyder project settings
 .spyderproject
