@@ -10,5 +10,5 @@ urlpatterns = [
     path("<int:question_id>/vote/", views.vote, name="vote"),
     path("<int:question_id>/frequency/", views.frequency, name="frequency"),
     path("<int:question_id>/statistics/", views.statistics, name="statistics"),
-    path("all/", views.all_polls, name="all"),
+    path("all/", views.AllPollsView.as_view(), name="all"),
 ]

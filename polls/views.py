@@ -34,11 +34,24 @@ class ResultsView(generic.DetailView):
     template_name = "polls/results.html"
 
 
+class AllPollsView(generic.ListView):
+    template_name = "polls/all.html"
+    context_object_name = "latest_question_list"
+
+    def get_queryset(self) -> list[Question]:
+        """
+        Return the last five published questions (not including those set to be
+        published in the future).
+        """
+        return Question.objects.order_by("-pub_date")
+    
+    
 def all_polls(request: HttpRequest) -> HttpResponse:
     latest_question_list = Question.objects.order_by("-pub_date")
     template = loader.get_template("polls/all.html")
     context = {"latest_question_list": latest_question_list}
     return HttpResponse(template.render(context, request))
+
 
 def frequency(request: HttpRequest, question_id: int) -> HttpResponse:
     question = get_object_or_404(Question, pk=question_id)
