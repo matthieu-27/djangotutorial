@@ -12,7 +12,7 @@ from .models import Choice, Question
 
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
-    context_object_name = "question_list"
+    context_object_name = "latest_question_list"
 
     def get_queryset(self) -> list[Question]:
         """
@@ -36,7 +36,7 @@ class ResultsView(generic.DetailView):
 
 class AllPollsView(generic.ListView):
     template_name = "polls/all.html"
-    context_object_name = "latest_question_list"
+    context_object_name = "question_list"
 
     def get_queryset(self) -> list[Question]:
         """
