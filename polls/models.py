@@ -1,9 +1,9 @@
 import datetime
 
 from django.db import models
+from django.db.models import Max, Min
 from django.utils import timezone
-from django.db.models import Max, Min, Sum
-from typing import Any
+
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
@@ -24,13 +24,16 @@ class Question(models.Model):
 
     def get_max_choice(self) -> int:
         return max([i.votes for i in self.get_choices()])
-    
+
     def get_most_popular(self) -> dict:
         max_votes = Choice.objects.aggregate(Max("votes", default=0))
-        max_votes['question'] = Choice.objects.filter(votes=max_votes['votes__max']).first()
+        max_votes['question'] = Choice.objects.filter(
+                                                      votes=max_votes
+                                                      ['votes__max']
+                                                     ).first()
         max_votes["question_id"] = max_votes["question"].question_id
         return max_votes
-    
+
     def get_least_popular(self) -> int:
         return Choice.objects.aggregate(Min("votes", default=0))
 

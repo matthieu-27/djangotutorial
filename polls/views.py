@@ -1,13 +1,13 @@
-from django.db.models import F
-from django.http import HttpResponseRedirect
+from typing import Any
+
+from django.db.models import Avg, F, Sum
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.views import generic
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.template import loader
-from django.db.models import F, Sum, Avg
-from .models import Choice, Question
 from django.utils import timezone
+from django.views import generic
+
+from .models import Choice, Question
 
 
 class IndexView(generic.ListView):
@@ -19,9 +19,9 @@ class IndexView(generic.ListView):
         Return the last five published questions (not including those set to be
         published in the future).
         """
-        return Question.objects.filter(pub_date__lte=timezone.now()).order_by("-pub_date")[
-            :3
-        ]
+        return Question.objects.filter(
+                                        pub_date__lte=timezone.now()
+                                        ).order_by("-pub_date")[:3]
 
 
 class DetailView(generic.DetailView):
@@ -44,7 +44,7 @@ class AllPollsView(generic.ListView):
         published in the future).
         """
         return Question.objects.order_by("-pub_date")
-    
+
 
 def frequency(request: HttpRequest, question_id: int) -> HttpResponse:
     question = get_object_or_404(Question, pk=question_id)
@@ -52,7 +52,8 @@ def frequency(request: HttpRequest, question_id: int) -> HttpResponse:
     total = sum([x.votes for x in choices])
     frequency = [x.votes * 100 / total for x in choices]
     return render(
-        request, "polls/frequency.html", {"question": question, "frequency": frequency}
+        request, "polls/frequency.html", {"question": question,
+                                          "frequency": frequency}
     )
 
 
@@ -64,7 +65,8 @@ def statistics(request: HttpRequest, question_id: int) -> HttpResponse:
     total_choices = len(Choice.objects.all())
     average_vote = Choice.objects.aggregate(Avg("votes", default=0))
     most_popular = question.get_most_popular()
-    most_popular_question = Question.objects.get(pk=most_popular['question_id'])
+    most_popular_question = Question.objects.get(pk=most_popular
+                                                 ['question_id'])
 
     last_total = 0
     all_values = []
@@ -77,7 +79,6 @@ def statistics(request: HttpRequest, question_id: int) -> HttpResponse:
             most_popular['votes__max'] = total
         all_values.append(total)
 
-    
     return render(
         request,
         "polls/statistics.html",
@@ -95,7 +96,7 @@ def statistics(request: HttpRequest, question_id: int) -> HttpResponse:
     )
 
 
-def vote(request: HttpRequest, question_id: int) -> HttpResponse | HttpResponseRedirect:
+def vote(request: HttpRequest, question_id: int) -> Any:
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST["choice"])
@@ -115,4 +116,5 @@ def vote(request: HttpRequest, question_id: int) -> HttpResponse | HttpResponseR
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-        return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+        return HttpResponseRedirect(reverse("polls:results",
+                                            args=(question.id,)))
