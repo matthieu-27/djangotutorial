@@ -17,4 +17,12 @@ class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
 
 
+class ChoiceAdmin(admin.ModelAdmin):
+    list_filter = ["question", "votes"]
+    list_display = ["choice_text"]
+    ordering = ["votes"]
+    search_fields = ["choice_text"]
+
+
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(Choice, ChoiceAdmin)
