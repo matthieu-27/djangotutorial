@@ -1,11 +1,11 @@
 from typing import Any
 
-from django.db.models import Avg, F, Sum
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
-from django.utils import timezone
-from django.views import generic
+from django.db.models import Avg, F, Sum  # type: ignore
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect  # type: ignore
+from django.shortcuts import get_object_or_404, render  # type: ignore
+from django.urls import reverse  # type: ignore
+from django.utils import timezone  # type: ignore
+from django.views import generic  # type: ignore
 
 from .forms import QuestionForm
 from .models import Choice, Question
