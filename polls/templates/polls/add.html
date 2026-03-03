@@ -1,0 +1,9 @@
+<h1>Add a question</h1>
+
+<form action="{% url 'polls:add' %}" method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <input type="submit" />
+</form>
