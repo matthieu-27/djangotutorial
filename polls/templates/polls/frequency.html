@@ -1,3 +1,8 @@
+{% extends "polls/base.html" %}
+
+{% block title %}My Popolls results{% endblock %}
+
+{% block content %}
 {% if question %}
 <h1>{{ question.question_text }}</h1>
 <table>
@@ -20,3 +25,4 @@
 {% else %}
 <p>No question are available.</p>
 {% endif %}
+{% endblock %}

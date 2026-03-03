@@ -1,3 +1,8 @@
+{% extends "polls/base.html" %}
+
+{% block title %}Add a question{% endblock %}
+
+{% block content %}
 <h1>Add a question</h1>
 
 <form action="{% url 'polls:add' %}" method="post">
@@ -7,3 +12,4 @@
     </table>
     <input type="submit" />
 </form>
+{% endblock %}
