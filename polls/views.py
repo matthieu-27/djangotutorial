@@ -1,5 +1,6 @@
 from typing import Any
 
+from django.contrib.auth import authenticate  # type: ignore
 from django.db.models import Avg, F, Sum  # type: ignore
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect  # type: ignore
 from django.shortcuts import get_object_or_404, render  # type: ignore
@@ -7,7 +8,7 @@ from django.urls import reverse  # type: ignore
 from django.utils import timezone  # type: ignore
 from django.views import generic  # type: ignore
 
-from .forms import QuestionForm
+from .forms import LoginForm, QuestionForm
 from .models import Choice, Question
 
 NB_MAX_CHOICES = 5
@@ -152,3 +153,22 @@ def add(request: HttpRequest) -> HttpResponse:
         "polls/add.html",
         {"form": form},
     )
+
+
+def login_form(request: HttpRequest) -> HttpResponse:
+    if request.method == "GET":
+        form = LoginForm()
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        form = LoginForm(request.POST)
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            HttpResponseRedirect(reverse("polls:login"))
+        else:
+            render(
+                request,
+                "polls/login.html",
+                {"form": form},
+            )
+    return render(request, "polls/login.html", {"form": form})

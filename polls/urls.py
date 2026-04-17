@@ -1,4 +1,3 @@
-from django.contrib import admin  # type: ignore
 from django.urls import path  # type: ignore
 
 from . import views
@@ -13,5 +12,5 @@ urlpatterns = [
     path("<int:question_id>/statistics/", views.statistics, name="statistics"),
     path("all/", views.AllPollsView.as_view(), name="all"),
     path("add/", views.add, name="add"),
-    path("admin/", admin.site.urls),
+    path("login", views.login_form, name="login"),
 ]

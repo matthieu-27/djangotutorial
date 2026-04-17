@@ -1,4 +1,6 @@
 from django import forms  # type: ignore
+from django.contrib.auth.models import User  # type: ignore
+from django.forms import ModelForm  # type: ignore
 
 
 class QuestionForm(forms.Form):
@@ -8,3 +10,9 @@ class QuestionForm(forms.Form):
     choice_3 = forms.CharField(label="Choice 3", max_length=200, required=False)
     choice_4 = forms.CharField(label="Choice 4", max_length=200, required=False)
     choice_5 = forms.CharField(label="Choice 5", max_length=200, required=False)
+
+
+class LoginForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ["username", "password"]
